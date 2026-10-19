@@ -1,0 +1,27 @@
+.stApp {color: #17263d;}
+.block-container {max-width: 1600px; padding: 2.1rem 2.2rem 2.5rem;}
+[data-testid="stSidebar"] {background: #f3f6fb; min-width: 272px; max-width: 290px; border-right: 1px solid #e7edf5;}
+[data-testid="stSidebarUserContent"] {padding: 1.2rem 1.15rem 1.8rem;}
+.brand {display: flex; align-items: center; gap: 12px; margin: 4px 0 23px;}
+.brand-mark {width: 42px; height: 42px; background: #306be4; color: white; border-radius: 13px; display: grid; place-items: center; font-size: 25px; font-weight: 700;}
+.brand-name {font-size: 23px; font-weight: 750; letter-spacing: -.6px;}
+.brand-sub {font-size: 11px; color: #738399; letter-spacing: .5px;}
+.eyebrow {font-size: 10px; font-weight: 750; letter-spacing: 1.5px; color: #7a8ba1; margin: 14px 0 8px;}
+.hero-kicker {color: #306be4; font-size: 11px; font-weight: 700; letter-spacing: 1.8px; margin-bottom: 6px;}
+h1.hero-title {font-size: clamp(24px, 2.5vw, 34px) !important; line-height: 1.25; font-weight: 750; letter-spacing: -.8px; margin: 0; padding: 0 !important;}
+.hero-sub {color: #78879a; font-size: 13px; margin: 9px 0 21px;}
+[data-testid="stMetric"] {background: white; border: 1px solid #e6ecf4; border-radius: 12px; padding: 16px 18px; box-shadow: 0 3px 10px #15253b03;}
+[data-testid="stMetricLabel"] {color: #7a889b; font-size: 12px;}
+[data-testid="stMetricValue"] {font-size: 29px; font-weight: 650; color: #17263d;}
+[data-testid="stVerticalBlockBorderWrapper"] {border-color: #e7edf5; border-radius: 12px;}
+[data-testid="stPageLink"] a {border-radius: 8px; font-size: 14px; padding: 9px 10px;}
+[data-testid="stPageLink"] a[aria-current="page"] {background: #e5edff; color: #245dce; font-weight: 650;}
+h3 {font-size: 21px !important; letter-spacing: -.3px; padding-top: 16px !important;}
+.stCaption {color: #7a889b;}
+div[data-testid="stExpander"] summary {font-size: 12px;}
+@media(max-width: 740px) {
+ .block-container {padding: 2rem 1rem 1.5rem;}
+ [data-testid="stMetricValue"] {font-size: 25px;}
+ [data-testid="stHorizontalBlock"] {flex-wrap: wrap;}
+ [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {min-width: min(100%, 290px); flex: 1 1 290px;}
+}

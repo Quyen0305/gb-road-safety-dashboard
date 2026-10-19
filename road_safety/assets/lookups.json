@@ -1,0 +1,573 @@
+{
+  "source": "https://www.gov.uk/government/statistical-data-sets/road-safety-open-data",
+  "workbook": "dft-data-guide.xlsx",
+  "sheet": "2024_code_list",
+  "retrieved": "2026-10-19",
+  "license": "Open Government Licence v3.0",
+  "fields": {
+    "collision_severity": {
+      "1": {
+        "en": "Fatal",
+        "vi": "Có tử vong"
+      },
+      "2": {
+        "en": "Serious",
+        "vi": "Nghiêm trọng"
+      },
+      "3": {
+        "en": "Slight",
+        "vi": "Nhẹ"
+      }
+    },
+    "casualty_severity": {
+      "1": {
+        "en": "Fatal",
+        "vi": "Tử vong"
+      },
+      "2": {
+        "en": "Serious",
+        "vi": "Bị thương nặng"
+      },
+      "3": {
+        "en": "Slight",
+        "vi": "Bị thương nhẹ"
+      }
+    },
+    "urban_or_rural_area": {
+      "1": {
+        "en": "Urban",
+        "vi": "Đô thị"
+      },
+      "2": {
+        "en": "Rural",
+        "vi": "Nông thôn"
+      },
+      "3": {
+        "en": "Unallocated",
+        "vi": "Không xác định"
+      },
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      }
+    },
+    "weather_conditions": {
+      "1": {
+        "en": "Fine no high winds",
+        "vi": "Quang, không gió mạnh"
+      },
+      "2": {
+        "en": "Raining no high winds",
+        "vi": "Mưa, không gió mạnh"
+      },
+      "3": {
+        "en": "Snowing no high winds",
+        "vi": "Tuyết, không gió mạnh"
+      },
+      "4": {
+        "en": "Fine + high winds",
+        "vi": "Quang, gió mạnh"
+      },
+      "5": {
+        "en": "Raining + high winds",
+        "vi": "Mưa, gió mạnh"
+      },
+      "6": {
+        "en": "Snowing + high winds",
+        "vi": "Tuyết, gió mạnh"
+      },
+      "7": {
+        "en": "Fog or mist",
+        "vi": "Sương mù"
+      },
+      "8": {
+        "en": "Other",
+        "vi": "Thời tiết khác"
+      },
+      "9": {
+        "en": "Unknown",
+        "vi": "Không xác định"
+      },
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      }
+    },
+    "light_conditions": {
+      "1": {
+        "en": "Daylight",
+        "vi": "Ban ngày"
+      },
+      "4": {
+        "en": "Darkness - lights lit",
+        "vi": "Tối, đèn đường bật"
+      },
+      "5": {
+        "en": "Darkness - lights unlit",
+        "vi": "Tối, đèn đường tắt"
+      },
+      "6": {
+        "en": "Darkness - no lighting",
+        "vi": "Tối, không có đèn đường"
+      },
+      "7": {
+        "en": "Darkness - lighting unknown",
+        "vi": "Tối, chưa rõ đèn đường"
+      },
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      }
+    },
+    "road_surface_conditions": {
+      "1": {
+        "en": "Dry",
+        "vi": "Khô"
+      },
+      "2": {
+        "en": "Wet or damp",
+        "vi": "Ướt / ẩm"
+      },
+      "3": {
+        "en": "Snow",
+        "vi": "Tuyết"
+      },
+      "4": {
+        "en": "Frost or ice",
+        "vi": "Băng / sương giá"
+      },
+      "5": {
+        "en": "Flood over 3cm. deep",
+        "vi": "Ngập trên 3 cm"
+      },
+      "6": {
+        "en": "Oil or diesel",
+        "vi": "Dầu / diesel"
+      },
+      "7": {
+        "en": "Mud",
+        "vi": "Bùn"
+      },
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      },
+      "9": {
+        "en": "unknown (self reported)",
+        "vi": "Không xác định"
+      }
+    },
+    "road_type": {
+      "1": {
+        "en": "Roundabout",
+        "vi": "Vòng xuyến"
+      },
+      "2": {
+        "en": "One way street",
+        "vi": "Đường một chiều"
+      },
+      "3": {
+        "en": "Dual carriageway",
+        "vi": "Đường có dải phân cách"
+      },
+      "6": {
+        "en": "Single carriageway",
+        "vi": "Đường không dải phân cách"
+      },
+      "7": {
+        "en": "Slip road",
+        "vi": "Đường nhánh kết nối"
+      },
+      "9": {
+        "en": "Unknown",
+        "vi": "Không xác định"
+      },
+      "12": {
+        "en": "One way street/Slip road",
+        "vi": "Một chiều / nhánh kết nối"
+      },
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      }
+    },
+    "speed_limit": {
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      },
+      "99": {
+        "en": "unknown (self reported)",
+        "vi": "Không xác định"
+      }
+    },
+    "casualty_class": {
+      "1": {
+        "en": "Driver or rider",
+        "vi": "Người điều khiển"
+      },
+      "2": {
+        "en": "Passenger",
+        "vi": "Hành khách"
+      },
+      "3": {
+        "en": "Pedestrian",
+        "vi": "Người đi bộ"
+      }
+    },
+    "sex_of_casualty": {
+      "1": {
+        "en": "Male",
+        "vi": "Nam"
+      },
+      "2": {
+        "en": "Female",
+        "vi": "Nữ"
+      },
+      "9": {
+        "en": "unknown (self reported)",
+        "vi": "Không xác định"
+      },
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      }
+    },
+    "vehicle_type": {
+      "1": {
+        "en": "Pedal cycle",
+        "vi": "Xe đạp"
+      },
+      "2": {
+        "en": "Motorcycle 50cc and under",
+        "vi": "Mô tô ≤ 50 cc"
+      },
+      "3": {
+        "en": "Motorcycle 125cc and under",
+        "vi": "Mô tô 51–125 cc"
+      },
+      "4": {
+        "en": "Motorcycle over 125cc and up to 500cc",
+        "vi": "Mô tô 126–500 cc"
+      },
+      "5": {
+        "en": "Motorcycle over 500cc",
+        "vi": "Mô tô > 500 cc"
+      },
+      "8": {
+        "en": "Taxi/Private hire car",
+        "vi": "Taxi / xe thuê riêng"
+      },
+      "9": {
+        "en": "Car",
+        "vi": "Ô tô"
+      },
+      "10": {
+        "en": "Minibus (8 - 16 passenger seats)",
+        "vi": "Xe khách 8–16 ghế"
+      },
+      "11": {
+        "en": "Bus or coach (17 or more pass seats)",
+        "vi": "Xe buýt / khách ≥ 17 ghế"
+      },
+      "16": {
+        "en": "Ridden horse",
+        "vi": "Ngựa có người cưỡi"
+      },
+      "17": {
+        "en": "Agricultural vehicle",
+        "vi": "Xe nông nghiệp"
+      },
+      "18": {
+        "en": "Tram",
+        "vi": "Tàu điện"
+      },
+      "19": {
+        "en": "Van / Goods 3.5 tonnes mgw or under",
+        "vi": "Xe tải / van ≤ 3,5 t"
+      },
+      "20": {
+        "en": "Goods over 3.5t. and under 7.5t",
+        "vi": "Xe tải > 3,5 đến < 7,5 t"
+      },
+      "21": {
+        "en": "Goods 7.5 tonnes mgw and over",
+        "vi": "Xe tải ≥ 7,5 t"
+      },
+      "22": {
+        "en": "Mobility scooter",
+        "vi": "Xe hỗ trợ di chuyển"
+      },
+      "23": {
+        "en": "Electric motorcycle",
+        "vi": "Mô tô điện"
+      },
+      "33": {
+        "en": "Personal powered transporter",
+        "vi": "Phương tiện điện cá nhân"
+      },
+      "90": {
+        "en": "Other vehicle",
+        "vi": "Phương tiện khác"
+      },
+      "97": {
+        "en": "Motorcycle - unknown cc",
+        "vi": "Mô tô chưa rõ dung tích"
+      },
+      "98": {
+        "en": "Goods vehicle - unknown weight",
+        "vi": "Xe tải chưa rõ khối lượng"
+      },
+      "99": {
+        "en": "Unknown vehicle type (self rep only)",
+        "vi": "Không xác định"
+      },
+      "103": {
+        "en": "Motorcycle - Scooter (1979-1998)",
+        "vi": "Scooter (mã lịch sử)"
+      },
+      "104": {
+        "en": "Motorcycle (1979-1998)",
+        "vi": "Mô tô (mã lịch sử)"
+      },
+      "105": {
+        "en": "Motorcycle - Combination (1979-1998)",
+        "vi": "Mô tô ba bánh (mã lịch sử)"
+      },
+      "106": {
+        "en": "Motorcycle over 125cc (1999-2004)",
+        "vi": "Mô tô > 125 cc (mã lịch sử)"
+      },
+      "108": {
+        "en": "Taxi (excluding private hire cars) (1979-2004)",
+        "vi": "Taxi (mã lịch sử)"
+      },
+      "109": {
+        "en": "Car (including private hire cars) (1979-2004)",
+        "vi": "Ô tô (mã lịch sử)"
+      },
+      "110": {
+        "en": "Minibus/Motor caravan (1979-1998)",
+        "vi": "Minibus / xe lưu trú (mã lịch sử)"
+      },
+      "113": {
+        "en": "Goods over 3.5 tonnes (1979-1998)",
+        "vi": "Xe tải > 3,5 t (mã lịch sử)"
+      },
+      "-1": {
+        "en": "Data missing or out of range",
+        "vi": "Không xác định"
+      }
+    },
+    "police_force": {
+      "1": {
+        "en": "Metropolitan Police",
+        "vi": "Metropolitan Police"
+      },
+      "3": {
+        "en": "Cumbria",
+        "vi": "Cumbria"
+      },
+      "4": {
+        "en": "Lancashire",
+        "vi": "Lancashire"
+      },
+      "5": {
+        "en": "Merseyside",
+        "vi": "Merseyside"
+      },
+      "6": {
+        "en": "Greater Manchester",
+        "vi": "Greater Manchester"
+      },
+      "7": {
+        "en": "Cheshire",
+        "vi": "Cheshire"
+      },
+      "10": {
+        "en": "Northumbria",
+        "vi": "Northumbria"
+      },
+      "11": {
+        "en": "Durham",
+        "vi": "Durham"
+      },
+      "12": {
+        "en": "North Yorkshire",
+        "vi": "North Yorkshire"
+      },
+      "13": {
+        "en": "West Yorkshire",
+        "vi": "West Yorkshire"
+      },
+      "14": {
+        "en": "South Yorkshire",
+        "vi": "South Yorkshire"
+      },
+      "16": {
+        "en": "Humberside",
+        "vi": "Humberside"
+      },
+      "17": {
+        "en": "Cleveland",
+        "vi": "Cleveland"
+      },
+      "20": {
+        "en": "West Midlands",
+        "vi": "West Midlands"
+      },
+      "21": {
+        "en": "Staffordshire",
+        "vi": "Staffordshire"
+      },
+      "22": {
+        "en": "West Mercia",
+        "vi": "West Mercia"
+      },
+      "23": {
+        "en": "Warwickshire",
+        "vi": "Warwickshire"
+      },
+      "30": {
+        "en": "Derbyshire",
+        "vi": "Derbyshire"
+      },
+      "31": {
+        "en": "Nottinghamshire",
+        "vi": "Nottinghamshire"
+      },
+      "32": {
+        "en": "Lincolnshire",
+        "vi": "Lincolnshire"
+      },
+      "33": {
+        "en": "Leicestershire",
+        "vi": "Leicestershire"
+      },
+      "34": {
+        "en": "Northamptonshire",
+        "vi": "Northamptonshire"
+      },
+      "35": {
+        "en": "Cambridgeshire",
+        "vi": "Cambridgeshire"
+      },
+      "36": {
+        "en": "Norfolk",
+        "vi": "Norfolk"
+      },
+      "37": {
+        "en": "Suffolk",
+        "vi": "Suffolk"
+      },
+      "40": {
+        "en": "Bedfordshire",
+        "vi": "Bedfordshire"
+      },
+      "41": {
+        "en": "Hertfordshire",
+        "vi": "Hertfordshire"
+      },
+      "42": {
+        "en": "Essex",
+        "vi": "Essex"
+      },
+      "43": {
+        "en": "Thames Valley",
+        "vi": "Thames Valley"
+      },
+      "44": {
+        "en": "Hampshire",
+        "vi": "Hampshire"
+      },
+      "45": {
+        "en": "Surrey",
+        "vi": "Surrey"
+      },
+      "46": {
+        "en": "Kent",
+        "vi": "Kent"
+      },
+      "47": {
+        "en": "Sussex",
+        "vi": "Sussex"
+      },
+      "48": {
+        "en": "City of London",
+        "vi": "City of London"
+      },
+      "50": {
+        "en": "Devon and Cornwall",
+        "vi": "Devon and Cornwall"
+      },
+      "52": {
+        "en": "Avon and Somerset",
+        "vi": "Avon and Somerset"
+      },
+      "53": {
+        "en": "Gloucestershire",
+        "vi": "Gloucestershire"
+      },
+      "54": {
+        "en": "Wiltshire",
+        "vi": "Wiltshire"
+      },
+      "55": {
+        "en": "Dorset",
+        "vi": "Dorset"
+      },
+      "60": {
+        "en": "North Wales",
+        "vi": "North Wales"
+      },
+      "61": {
+        "en": "Gwent",
+        "vi": "Gwent"
+      },
+      "62": {
+        "en": "South Wales",
+        "vi": "South Wales"
+      },
+      "63": {
+        "en": "Dyfed-Powys",
+        "vi": "Dyfed-Powys"
+      },
+      "91": {
+        "en": "Northern",
+        "vi": "Northern"
+      },
+      "92": {
+        "en": "Grampian",
+        "vi": "Grampian"
+      },
+      "93": {
+        "en": "Tayside",
+        "vi": "Tayside"
+      },
+      "94": {
+        "en": "Fife",
+        "vi": "Fife"
+      },
+      "95": {
+        "en": "Lothian and Borders",
+        "vi": "Lothian and Borders"
+      },
+      "96": {
+        "en": "Central",
+        "vi": "Central"
+      },
+      "97": {
+        "en": "Strathclyde",
+        "vi": "Strathclyde"
+      },
+      "98": {
+        "en": "Dumfries and Galloway",
+        "vi": "Dumfries and Galloway"
+      },
+      "99": {
+        "en": "Police Scotland",
+        "vi": "Police Scotland"
+      }
+    }
+  }
+}
