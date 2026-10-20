@@ -10,14 +10,14 @@ page_intro('Thời gian','Tai nạn tập trung vào tháng nào, giờ nào và
 months=count_by(c,'month',list(range(ctx.filters.start.month,ctx.filters.end.month+1)))
 months['group']=months.group.map(lambda m:f'T{m}')
 hours=count_by(c[c.hour.notna()],'hour',list(range(24)))
-left,right=st.columns(2)
+left,right=st.columns(2,gap='medium')
 with left,st.container(border=True):
     show_chart(line_chart(months,'group','count','Số vụ theo tháng'),months,'time_months')
 with right,st.container(border=True):
     fig=bar_chart(hours,'group','count','Số vụ theo giờ trong ngày')
     fig.update_xaxes(title_text='Giờ',dtick=3)
     show_chart(fig,hours,'time_hours')
-left,right=st.columns([1.65,1])
+left,right=st.columns([1.65,1],gap='medium')
 with left,st.container(border=True):
     heat=time_heatmap(c)
     exported=heat.rename(index=dict(enumerate(WEEKDAYS)),columns=lambda hour:f'{hour:02d}:00').rename_axis('Thứ').reset_index()

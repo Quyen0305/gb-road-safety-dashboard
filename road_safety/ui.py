@@ -78,7 +78,7 @@ def render_header(context: DashboardContext) -> None:
     f=context.filters
     countries=', '.join(f.countries) if f.countries else 'Chưa chọn quốc gia'
     subtitle=f'{f.start:%d/%m/%Y} — {f.end:%d/%m/%Y} · {countries}'
-    st.markdown('<div class="hero-kicker">ROAD SAFETY EXPLORER / 2024</div>'
+    st.markdown(
                 '<h1 class="hero-title">Tai nạn giao thông tại Great Britain</h1>'
                 f'<div class="hero-sub">{html.escape(subtitle)}</div>',unsafe_allow_html=True)
     metrics=headline_metrics(context.data)
@@ -86,8 +86,9 @@ def render_header(context: DashboardContext) -> None:
             ('casualties','Người thương vong','Tổng số người bị thương hoặc tử vong.'),
             ('fatalities','Người tử vong','Số người tử vong, khác số vụ có tử vong.'),
             ('vehicles','Phương tiện liên quan','Mỗi phương tiện trong một vụ được đếm một lần.')]
-    for column,(key,label,help_text) in zip(st.columns(4),labels):
-        column.metric(label,number(metrics[key]),help=help_text)
+    with st.container(key='headline_metrics'):
+        for column,(key,label,help_text) in zip(st.columns(4,gap='medium'),labels):
+            column.metric(label,number(metrics[key]),help=help_text)
 
 
 def page_intro(title: str, subtitle: str) -> None:

@@ -6,7 +6,7 @@ import pandas as pd
 LOOKUPS = json.loads((Path(__file__).parent / 'assets/lookups.json').read_text(encoding='utf-8'))
 UNKNOWN = 'Không xác định'
 SEVERITIES = {1: 'Có tử vong', 2: 'Nghiêm trọng', 3: 'Nhẹ'}
-SEVERITY_COLORS = {'Có tử vong': '#e66b76', 'Nghiêm trọng': '#eea34a', 'Nhẹ': '#4b91e8', UNKNOWN: '#94a3b8'}
+SEVERITY_COLORS = {'Có tử vong': '#DC2626', 'Nghiêm trọng': '#F59E0B', 'Nhẹ': '#3B82F6', UNKNOWN: '#9CA3AF'}
 WEEKDAYS = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ nhật']
 AGE_GROUPS = ['0–15', '16–24', '25–34', '35–44', '45–54', '55–64', '65+', UNKNOWN]
 CONDITIONS = {'weather_conditions': 'Thời tiết', 'light_conditions': 'Ánh sáng',

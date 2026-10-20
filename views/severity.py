@@ -8,7 +8,7 @@ from road_safety.ui import get_context, page_intro, show_chart
 
 ctx=get_context(); c=ctx.data.collisions
 page_intro('Mức độ nghiêm trọng','Phân biệt quy mô số vụ với tỷ trọng vụ có tử vong hoặc nghiêm trọng.')
-left,right=st.columns([1,1.6])
+left,right=st.columns([1,1.6],gap='medium')
 with left,st.container(border=True):
     counts=count_by(c,'severity_label',list(SEVERITIES.values()))
     show_chart(donut_chart(counts,'Cơ cấu mức độ — đơn vị: vụ'),counts,'severity_total')
@@ -26,7 +26,7 @@ with st.container(border=True):
     serious=c[c.collision_severity.isin([1,2])].groupby(group).size()
     table['serious_share']=table.group.map(serious).fillna(0)/table['count']*100
     fig=px.scatter(table,x='count',y='serious_share',hover_name='group',size='count',size_max=42,
-                    text='group' if len(table)<=5 else None,color_discrete_sequence=['#eea34a'])
+                    text='group' if len(table)<=5 else None,color_discrete_sequence=['#F59E0B'])
     polish(fig,'Quy mô và tỷ trọng vụ tử vong / nghiêm trọng',360)
     fig.update_traces(textposition='top center',hovertemplate='<b>%{hovertext}</b><br>%{x:,.0f} vụ<br>%{y:.1f}% tử vong / nghiêm trọng<extra></extra>')
     fig.update_xaxes(title_text='Tổng số vụ trong khu vực',rangemode='tozero')

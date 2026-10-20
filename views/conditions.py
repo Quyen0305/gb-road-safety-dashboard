@@ -11,7 +11,7 @@ field=st.selectbox('Điều kiện phân tích',list(CONDITIONS),format_func=lam
 label=field+'_label'
 counts=count_by(c,label)
 severity=severity_by(c,label)
-left,right=st.columns([1.1,1.3])
+left,right=st.columns([1.1,1.3],gap='medium')
 with left,st.container(border=True):
     fig=bar_chart(counts,'count','group',f'Số vụ theo {CONDITIONS[field].lower()}',True)
     fig.update_layout(height=410)

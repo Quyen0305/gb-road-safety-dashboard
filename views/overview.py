@@ -19,9 +19,9 @@ with right,st.container(border=True):
     show_chart(donut_chart(severity,'Cơ cấu mức độ của vụ tai nạn'),severity,'overview_severity')
 left,right=st.columns(2,gap='medium')
 with left,st.container(border=True):
-    show_chart(bar_chart(countries,'count','group','Tai nạn theo quốc gia',True),countries,'overview_countries')
+    show_chart(bar_chart(countries,'count','group','Tai nạn theo quốc gia',True,show_values=True),countries,'overview_countries')
 with right,st.container(border=True):
-    figure=severity_chart(urban,False)
+    figure=severity_chart(urban,False,show_totals=True)
     figure.update_layout(title_text='Tai nạn tại đô thị và nông thôn')
     show_chart(figure,urban,'overview_urban')
 peak=months[months['count'].eq(months['count'].max())]

@@ -7,7 +7,7 @@ from road_safety.ui import get_context, number, page_intro, render_table_downloa
 ctx=get_context(); c=ctx.data.collisions
 page_intro('Không gian','Khám phá phân bố vị trí tai nạn và quy mô ghi nhận tại các khu vực.')
 with st.container(border=True):
-    left,right=st.columns([2,1])
+    left,right=st.columns([2,1],gap='medium')
     with left:
         mode=st.radio('Lớp dữ liệu',['Mật độ theo ô','Điểm theo mức độ'],horizontal=True,key='map_mode')
     with right:
@@ -24,7 +24,7 @@ with st.container(border=True):
     else:
         st.caption('Đường bờ đơn giản lưu tại máy · Natural Earth. Dùng chuột để phóng to và di chuyển bản đồ.')
     render_table_download(map_cells(c,.08),'spatial_cells')
-left,right=st.columns([1.3,1])
+left,right=st.columns([1.3,1],gap='medium')
 with left,st.container(border=True):
     areas=count_by(c,'police_force_label')
     fig=bar_chart(areas.head(10),'count','group','10 khu vực cảnh sát có nhiều vụ nhất',True)

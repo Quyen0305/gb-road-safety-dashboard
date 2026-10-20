@@ -10,7 +10,7 @@ page_intro('Người & phương tiện','Các biểu đồ về người đếm 
 if people.empty:
     st.info('Không có bản ghi thương vong trong các vụ đã chọn.')
 else:
-    left,right=st.columns(2)
+    left,right=st.columns(2,gap='medium')
     with left,st.container(border=True):
         ages=count_by(people,'age_group',AGE_GROUPS)
         fig=bar_chart(ages,'group','count','Thương vong theo nhóm tuổi')
@@ -21,7 +21,7 @@ else:
         fig=bar_chart(sexes,'group','count','Thương vong theo giới tính ghi nhận')
         fig.update_yaxes(title_text='Số người')
         show_chart(fig,sexes,'people_sex')
-left,right=st.columns(2)
+left,right=st.columns(2,gap='medium')
 with left,st.container(border=True):
     roles=count_by(people,'casualty_class_label')
     fig=bar_chart(roles,'count','group','Vai trò của người thương vong',True)
