@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from .data import DataBundle
-from .labels import UNKNOWN
+from .labels import LOCAL_AUTHORITIES, UNKNOWN
 
 
 @dataclass
@@ -24,9 +24,13 @@ def filter_bundle(bundle: DataBundle, filters: FilterSpec) -> DataBundle:
             & c.country.isin(filters.countries) & c.collision_severity.isin(filters.severities)
             & c.urban_or_rural_area.isin(filters.urban_areas) & c.police_force.isin(filters.police_forces))
     selected = c.loc[keep].copy()
-    ids = selected.collision_index
-    return DataBundle(selected, bundle.vehicles[bundle.vehicles.collision_index.isin(ids)].copy(),
-                      bundle.casualties[bundle.casualties.collision_index.isin(ids)].copy(),
+    # Collision keys are unique after normalization. Index lookup avoids the
+    # per-key Arrow scalar conversion in StringArray.isin on large selections.
+    ids = pd.Index(selected.collision_index)
+    vehicle_rows = ids.get_indexer(bundle.vehicles.collision_index) >= 0
+    casualty_rows = ids.get_indexer(bundle.casualties.collision_index) >= 0
+    return DataBundle(selected, bundle.vehicles.loc[vehicle_rows].copy(),
+                      bundle.casualties.loc[casualty_rows].copy(),
                       {'invalid_coordinates': int((~selected.valid_coordinates).sum()),
                        'missing_hours': int(selected.hour.isna().sum())})
 
@@ -78,6 +82,22 @@ def map_cells(collisions: pd.DataFrame, cell_degrees: float) -> pd.DataFrame:
     for col in ['longitude', 'latitude']:
         points[col] = (np.floor(points[col] / cell_degrees) + 0.5) * cell_degrees
     return points.groupby(['longitude', 'latitude', 'severity_label'], observed=True, sort=False).size().rename('count').reset_index()
+
+
+def locality_summary(collisions: pd.DataFrame) -> pd.DataFrame:
+    """Count recorded authorities exactly; use valid crash coordinates for markers."""
+    frame = pd.DataFrame({
+        'area_code': collisions.local_authority_ons_district.astype('string').fillna(UNKNOWN),
+        'longitude': collisions.longitude.where(collisions.valid_coordinates),
+        'latitude': collisions.latitude.where(collisions.valid_coordinates),
+    })
+    result = frame.groupby('area_code',sort=True,dropna=False).agg(
+        count=('area_code','size'),longitude=('longitude','mean'),latitude=('latitude','mean')).reset_index()
+    result['group'] = result.area_code.map(LOCAL_AUTHORITIES).fillna(
+        result.area_code.map(lambda code: UNKNOWN if code in ('', '-1', UNKNOWN) else f'Chưa có nhãn ({code})'))
+    result = result.sort_values('count',ascending=False,kind='stable').reset_index(drop=True)
+    result['rank'] = np.arange(1,len(result)+1)
+    return result[['area_code','group','count','longitude','latitude','rank']]
 
 
 def csv_bytes(table: pd.DataFrame) -> bytes:

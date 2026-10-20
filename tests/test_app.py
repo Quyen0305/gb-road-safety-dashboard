@@ -55,3 +55,86 @@ def test_incomplete_date_range_does_not_crash(app):
     app.date_input(key='f_dates').set_value((app.date_input(key='f_dates').value[0],)).run()
     assert not app.exception
     assert any('ngày bắt đầu' in item.value for item in app.info)
+
+
+@pytest.mark.parametrize('key',['f_country','f_severity','f_urban','f_police'])
+def test_clear_all_filter_values_stays_empty_until_reset(app,key):
+    app.run()
+    before = {name:list(app.multiselect(key=name).value)
+              for name in ['f_country','f_severity','f_urban','f_police']}
+    app.multiselect(key=key).set_value([]).run()
+    assert not app.exception
+    assert app.multiselect(key=key).value == []
+    assert all(metric.value == '0' for metric in app.metric)
+    for other in before:
+        if other != key:
+            assert app.multiselect(key=other).value == before[other]
+    app.switch_page('views/temporal.py').run()
+    assert not app.exception
+    assert app.multiselect(key=key).value == []
+    app.button(key='reset_filters').click().run()
+    assert not app.exception
+    assert [metric.value for metric in app.metric] == ['3','4','1','4']
+
+
+@pytest.mark.parametrize('key',['f_country','f_severity','f_urban','f_police'])
+def test_explicit_clear_button_clears_only_its_filter(app,key):
+    app.run()
+    previous = {widget.key:list(widget.value) for widget in app.multiselect}
+    app.button(key='clear_'+key).click().run()
+    assert not app.exception
+    assert app.multiselect(key=key).value == []
+    assert app.button(key='clear_'+key).disabled
+    assert [metric.value for metric in app.metric] == ['0','0','0','0']
+    for other in previous:
+        if other != key:
+            assert app.multiselect(key=other).value == previous[other]
+    app.switch_page('views/temporal.py').run()
+    assert app.multiselect(key=key).value == []
+    app.button(key='reset_filters').click().run()
+    assert not app.button(key='clear_'+key).disabled
+    assert [metric.value for metric in app.metric] == ['3','4','1','4']
+
+
+def test_navigation_reuses_selection_but_filter_changes_refresh_it(app):
+    app.run()
+    original = app.session_state['_dashboard_context'].data
+    app.switch_page('views/temporal.py').run()
+    assert not app.exception
+    assert app.session_state['_dashboard_context'].data is original
+    app.multiselect(key='f_country').set_value(['Wales']).run()
+    selected = app.session_state['_dashboard_context'].data
+    assert selected is not original
+    assert [metric.value for metric in app.metric] == ['1','1','1','1']
+    app.switch_page('views/overview.py').run()
+    assert app.session_state['_dashboard_context'].data is selected
+
+
+def test_source_file_change_invalidates_session_selection(app):
+    import os
+    import pandas as pd
+
+    app.run()
+    original = app.session_state['_dashboard_context']
+    source = original.source_path
+    previous_mtime = source.stat().st_mtime_ns
+    frame = pd.read_csv(source)
+    frame.loc[frame.casualty_key.eq('P3'),'casualty_severity'] = 2
+    frame.to_csv(source,index=False)
+    # Make the source version change deterministic even on coarse file systems.
+    os.utime(source,ns=(previous_mtime + 1_000_000_000,previous_mtime + 1_000_000_000))
+    app.run()
+    assert not app.exception
+    assert app.session_state['_dashboard_context'].data is not original.data
+    assert [metric.value for metric in app.metric] == ['3','4','0','4']
+
+
+def test_spatial_search_and_layers_survive_filter_changes(app):
+    app.run().switch_page('views/spatial.py').run()
+    code = app.session_state['_dashboard_context'].data.collisions.local_authority_ons_district.iloc[0]
+    app.selectbox(key='map_focus').set_value(code).run()
+    app.multiselect(key='f_country').set_value(['Wales']).run()
+    for mode in ['Tô màu địa phương','Tô màu quốc gia','Theo địa phương','Mật độ theo ô','Điểm theo mức độ']:
+        app.selectbox(key='map_mode').set_value(mode).run()
+        assert not app.exception
+        assert [metric.value for metric in app.metric] == ['1','1','1','1']

@@ -53,6 +53,36 @@ def test_online_map_does_not_cover_roads_with_opaque_polygons(joined_fixture):
     assert len(json.loads(deck.to_json())['layers'][0]['data']) == 3
 
 
+def test_locality_map_names_ranks_and_bubbles_use_the_same_counts(joined_fixture):
+    from road_safety.analytics import locality_summary
+
+    joined_fixture['local_authority_ons_district'] = joined_fixture.collision_index.map(
+        {'A':'E08000025','B':'E08000035','C':'E08000003'})
+    collisions = normalize_data(joined_fixture).collisions
+    table = locality_summary(collisions)
+    spec = json.loads(collision_map(collisions,'Theo địa phương',places=table).to_json())
+    bubbles = next(layer for layer in spec['layers'] if layer['id'] == 'locality-bubbles')
+    labels = next(layer for layer in spec['layers'] if layer['id'] == 'locality-names')
+    assert sum(row['count'] for row in bubbles['data']) == 3
+    assert len(labels['data']) == 3
+    assert labels['characterSet'] == 'auto'
+    assert labels['getTextAnchor'] == 'middle'
+    assert labels['getAlignmentBaseline'] == 'center'
+    assert len({tuple(row['label_position']) for row in labels['data']}) == 3
+    birmingham = next(row for row in labels['data'] if row['group'] == 'Birmingham')
+    assert birmingham['count'] == 1
+    assert 'Birmingham' in birmingham['label']
+    assert '1 vụ' in birmingham['label']
+
+    focused = json.loads(collision_map(collisions,'Theo địa phương',places=table,
+        focus_code='E08000025').to_json())
+    assert focused['initialViewState']['zoom'] == 8.5
+    focused_labels = next(layer for layer in focused['layers'] if layer['id'] == 'locality-names')
+    assert next(row for row in focused_labels['data'] if row['group']=='Birmingham')['priority'] == 1000
+    hidden = json.loads(collision_map(collisions,'Theo địa phương',places=table,show_names=False).to_json())
+    assert all(layer['id'] != 'locality-names' for layer in hidden['layers'])
+
+
 @pytest.mark.parametrize('groups',[['00h','01h','02h'],['T1','T2','T3']])
 def test_time_axis_stays_chronological_when_first_severity_trace_has_gaps(groups):
     table=pd.DataFrame({'group':groups,'severity':['Có tử vong','Nhẹ','Có tử vong'],

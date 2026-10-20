@@ -6,7 +6,7 @@ import html
 import pandas as pd
 import streamlit as st
 
-from .analytics import FilterSpec, csv_bytes, headline_metrics
+from .analytics import FilterSpec, csv_bytes, filter_bundle, headline_metrics
 from .data import DataBundle
 from .labels import category_label
 
@@ -16,6 +16,19 @@ class DashboardContext:
     data: DataBundle
     filters: FilterSpec
     source_path: Path
+    source_version: tuple[int, int] | None = None
+
+
+def prepare_context(bundle: DataBundle, filters: FilterSpec, source: Path,
+                    source_version: tuple[int, int]) -> DashboardContext:
+    """Keep only the current selection per session; never hash large frames."""
+    previous = st.session_state.get('_dashboard_context')
+    if (previous is not None and previous.source_path == source
+            and previous.source_version == source_version and previous.filters == filters):
+        return previous
+    context = DashboardContext(filter_bundle(bundle, filters), filters, source, source_version)
+    st.session_state['_dashboard_context'] = context
+    return context
 
 
 def get_context() -> DashboardContext:
@@ -24,6 +37,22 @@ def get_context() -> DashboardContext:
 
 def number(value: int) -> str:
     return f'{value:,}'.replace(',','.')
+
+
+def clear_filter_selection(key: str) -> None:
+    st.session_state[key] = []
+
+
+def multiselect_filter(label: str, options: list, key: str, format_func=str) -> list:
+    """Give each filter a server-handled clear button outside the dropdown."""
+    with st.container(key='filter_'+key):
+        label_column, clear_column = st.columns([7,1],gap='small',vertical_alignment='center')
+        label_column.markdown(f'<div class="filter-label">{html.escape(label)}</div>',unsafe_allow_html=True)
+        clear_column.button('✕',key='clear_'+key,help=f'Xóa tất cả lựa chọn: {label}',
+            on_click=clear_filter_selection,args=(key,),disabled=not bool(st.session_state.get(key)),
+            type='tertiary',width='stretch')
+        return st.multiselect(label,options,key=key,format_func=format_func,
+                              label_visibility='collapsed',placeholder='Chưa chọn')
 
 
 def render_filters(bundle: DataBundle) -> FilterSpec | None:
@@ -61,11 +90,11 @@ def render_filters(bundle: DataBundle) -> FilterSpec | None:
     st.markdown('<div class="eyebrow">BỘ LỌC DỮ LIỆU</div>',unsafe_allow_html=True)
     st.selectbox('Chọn nhanh thời gian',['Cả năm','Quý 1','Quý 2','Quý 3','Quý 4','Tùy chỉnh'],key='f_quick',on_change=quick_dates)
     selected_dates=st.date_input('Khoảng ngày',key='f_dates',min_value=start,max_value=end,format='DD/MM/YYYY',on_change=custom_dates)
-    countries=st.multiselect('Quốc gia',defaults['f_country'],key='f_country')
-    severities=st.multiselect('Mức độ của vụ tai nạn',defaults['f_severity'],key='f_severity',format_func=lambda code:category_label('collision_severity',code))
-    urban=st.multiselect('Đô thị / nông thôn',defaults['f_urban'],key='f_urban',format_func=lambda code:category_label('urban_or_rural_area',code))
+    countries=multiselect_filter('Quốc gia',defaults['f_country'],key='f_country')
+    severities=multiselect_filter('Mức độ của vụ tai nạn',defaults['f_severity'],key='f_severity',format_func=lambda code:category_label('collision_severity',code))
+    urban=multiselect_filter('Đô thị / nông thôn',defaults['f_urban'],key='f_urban',format_func=lambda code:category_label('urban_or_rural_area',code))
     with st.expander('Lọc chi tiết'):
-        police=st.multiselect('Khu vực cảnh sát',defaults['f_police'],key='f_police',format_func=lambda code:category_label('police_force',code))
+        police=multiselect_filter('Khu vực cảnh sát',defaults['f_police'],key='f_police',format_func=lambda code:category_label('police_force',code))
     st.button('Đặt lại bộ lọc',key='reset_filters',on_click=reset,width='stretch',icon=':material/restart_alt:')
     st.caption('Bộ lọc áp dụng theo vụ tai nạn và giữ nguyên khi chuyển trang.')
     st.caption('Nguồn: DfT · STATS19 · 2024')
@@ -100,12 +129,13 @@ def render_table_download(table: pd.DataFrame, name: str) -> None:
     names={'group':'Nhóm','count':'Số lượng','severity':'Mức độ vụ','group_total':'Tổng số vụ của nhóm',
            'percentage':'Tỷ trọng (%)','month':'Tháng','day_type':'Loại ngày','collisions':'Số vụ',
            'calendar_days':'Số ngày lịch','per_day':'Bình quân vụ/ngày','longitude':'Kinh độ',
-           'latitude':'Vĩ độ','severity_label':'Mức độ vụ','serious_share':'Tỷ trọng tử vong/nghiêm trọng (%)'}
+           'latitude':'Vĩ độ','severity_label':'Mức độ vụ','serious_share':'Tỷ trọng tử vong/nghiêm trọng (%)',
+           'area_code':'Mã địa phương (ONS)','rank':'Thứ hạng'}
     display=table.rename(columns=names)
     with st.expander('Bảng số liệu · Tải CSV'):
         st.dataframe(display,hide_index=True,width='stretch')
         st.download_button('Tải bảng CSV',data=csv_bytes(display),file_name=f'roadlens_{name}.csv',
-                           mime='text/csv',key='download_'+name,icon=':material/download:')
+                           mime='text/csv',key='download_'+name,icon=':material/download:',on_click='ignore')
 
 
 def show_chart(figure, table: pd.DataFrame, name: str) -> None:

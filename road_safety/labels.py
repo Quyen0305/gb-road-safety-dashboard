@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 LOOKUPS = json.loads((Path(__file__).parent / 'assets/lookups.json').read_text(encoding='utf-8'))
+LOCAL_AUTHORITIES = json.loads((Path(__file__).parent / 'assets/local_authorities.json').read_text(encoding='utf-8'))['names']
 UNKNOWN = 'Không xác định'
 SEVERITIES = {1: 'Có tử vong', 2: 'Nghiêm trọng', 3: 'Nhẹ'}
 SEVERITY_COLORS = {'Có tử vong': '#DC2626', 'Nghiêm trọng': '#F59E0B', 'Nhẹ': '#3B82F6', UNKNOWN: '#9CA3AF'}

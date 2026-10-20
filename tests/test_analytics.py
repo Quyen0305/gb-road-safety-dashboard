@@ -70,3 +70,22 @@ def test_people_and_vehicle_groups_keep_missing_data(joined_fixture):
     bundle = normalize_data(joined_fixture)
     assert count_by(bundle.casualties, 'age_group').set_index('group').loc['Không xác định','count'] == 1
     assert count_by(bundle.vehicles, 'vehicle_type_label')['count'].sum() == 4
+
+
+def test_locality_summary_uses_official_codes_and_keeps_unmapped_counts(joined_fixture):
+    from road_safety.analytics import locality_summary
+
+    codes = {'A':'E08000025','B':'E08000035','C':'NOT_IN_GUIDE'}
+    joined_fixture['local_authority_ons_district'] = joined_fixture.collision_index.map(codes)
+    joined_fixture.loc[joined_fixture.collision_index.eq('B'),'longitude'] = None
+    table = locality_summary(normalize_data(joined_fixture).collisions)
+    by_code = table.set_index('area_code')
+    assert table['count'].sum() == 3
+    assert by_code.loc['E08000025','group'] == 'Birmingham'
+    assert by_code.loc['E08000035','group'] == 'Leeds'
+    assert by_code.loc['E08000025','count'] == 1
+    assert pd.isna(by_code.loc['E08000035','longitude'])
+    assert 'NOT_IN_GUIDE' in by_code.loc['NOT_IN_GUIDE','group']
+    empty = locality_summary(normalize_data(joined_fixture).collisions.iloc[:0])
+    assert empty.empty
+    assert list(empty.columns) == list(table.columns)

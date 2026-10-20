@@ -4,9 +4,8 @@ from pathlib import Path
 
 import streamlit as st
 
-from road_safety.analytics import filter_bundle
 from road_safety.data import DEFAULT_SOURCE, load_data
-from road_safety.ui import DashboardContext, methodology, render_filters, render_header
+from road_safety.ui import methodology, prepare_context, render_filters, render_header
 
 ROOT=Path(__file__).resolve().parent
 st.set_page_config(page_title='RoadLens · Great Britain 2024',page_icon=':material/route:',layout='wide')
@@ -29,8 +28,7 @@ with st.sidebar:
 source=Path(os.environ.get('ROADLENS_DATA',str(DEFAULT_SOURCE)))
 try:
     stat=source.stat()
-    with st.spinner('Đang chuẩn bị dữ liệu Great Britain 2024…'):
-        data=load_data(source,stat.st_mtime_ns,stat.st_size)
+    data=load_data(source,stat.st_mtime_ns,stat.st_size)
 except (OSError,ValueError) as error:
     st.error(f'Không thể nạp dữ liệu: {error}')
     st.caption('Đặt CSV đã chuẩn bị cạnh app.py. Xem README để cấu hình vị trí khác.')
@@ -41,8 +39,7 @@ with st.sidebar:
 if filters is None:
     st.info('Chọn đủ ngày bắt đầu và ngày kết thúc để xem kết quả.')
     st.stop()
-context=DashboardContext(filter_bundle(data,filters),filters,source)
-st.session_state['_dashboard_context']=context
+context=prepare_context(data,filters,source,(stat.st_mtime_ns,stat.st_size))
 render_header(context)
 if context.data.collisions.empty:
     st.info('Không có dữ liệu phù hợp với bộ lọc. Hãy thay đổi lựa chọn hoặc đặt lại bộ lọc bên trái.')

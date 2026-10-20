@@ -5,6 +5,23 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def save_local_authorities(guide):
+    rows = guide.loc[guide['field name'].eq('local_authority_ons_district')]
+    names = dict(zip(rows['code/format'].astype(str), rows['label'].astype(str)))
+    output = {
+        'source': 'https://www.gov.uk/government/statistical-data-sets/road-safety-open-data',
+        'workbook': 'dft-data-guide.xlsx',
+        'sheet': '2024_code_list',
+        'field': 'local_authority_ons_district',
+        'license': 'Open Government Licence v3.0',
+        'names': names,
+    }
+    (ROOT / 'road_safety/assets/local_authorities.json').write_text(
+        json.dumps(output,ensure_ascii=False,indent=2) + '\n',encoding='utf-8')
+
+
 VI = {
  'collision_severity': {1:'Có tử vong',2:'Nghiêm trọng',3:'Nhẹ'},
  'casualty_severity': {1:'Tử vong',2:'Bị thương nặng',3:'Bị thương nhẹ'},
@@ -21,6 +38,7 @@ VI = {
 
 if __name__ == '__main__':
     guide = pd.read_excel(ROOT / 'road_safety/assets/dft-data-guide.xlsx', sheet_name='2024_code_list')
+    save_local_authorities(guide)
     fields = {}
     for field in [*VI, 'police_force']:
         entries = {}

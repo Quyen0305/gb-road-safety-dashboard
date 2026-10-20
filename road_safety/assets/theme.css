@@ -35,11 +35,25 @@ html, body, [class*="css"], .stApp {
 }
 
 [data-testid="stSidebar"] {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+[data-testid="stSidebar"][data-collapsed="false"] {
   width: var(--sidebar-width) !important;
   min-width: var(--sidebar-width) !important;
   max-width: var(--sidebar-width) !important;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
+}
+
+[data-testid="stSidebar"][data-collapsed="true"] {
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  border-right: 0;
+}
+
+[data-testid="stSidebarCollapseButton"] {
+  visibility: visible;
 }
 
 [data-testid="stSidebarUserContent"] {
@@ -244,6 +258,39 @@ h3 {
   color: #1D4ED8;
 }
 
+.filter-label {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Use the explicit Python clear callback, outside the dropdown's hit area. */
+[class*="st-key-filter_f_"] button[aria-label="Clear all"] {
+  display: none !important;
+}
+
+[class*="st-key-clear_f_"] button {
+  min-width: 28px;
+  min-height: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 7px;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1;
+}
+
+[class*="st-key-clear_f_"] button:hover:enabled {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+[class*="st-key-clear_f_"] button:focus-visible {
+  outline: 2px solid #93C5FD;
+  outline-offset: 2px;
+}
+
 button[kind="secondary"],
 [data-testid="stDownloadButton"] button {
   min-height: 40px;
@@ -287,6 +334,42 @@ div[data-testid="stExpander"] summary {
 hr {
   border-color: var(--border) !important;
 }
+
+/* Plotly uses a crosshair over its drag surface; keep the normal pointer
+   without disabling hover tooltips or the existing chart interactions. */
+.js-plotly-plot .draglayer .nsewdrag,
+.js-plotly-plot .draglayer .cursor-crosshair,
+.js-plotly-plot .draglayer rect {
+  cursor: default !important;
+}
+
+/* Keep the map tools on one aligned row on desktop. */
+.st-key-map_toolbar [role="radiogroup"] {
+  gap: .6rem;
+}
+
+.st-key-map_toolbar [data-testid="stWidgetLabel"] p,
+.st-key-map_toolbar [data-testid="stRadio"] label p {
+  font-size: 12px;
+}
+
+.st-key-map_toolbar [data-testid="stToggle"] {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 2px 0;
+  color: #475569;
+  font-size: 12px;
+}
+
+.map-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.map-legend-item i { width: 14px; height: 14px; border-radius: 3px; border: 1px solid #CBD5E1; }
 
 @media (max-width: 1120px) {
   :root { --sidebar-width: 240px; }

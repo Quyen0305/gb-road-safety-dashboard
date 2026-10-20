@@ -73,7 +73,7 @@ def normalize_data(frame: pd.DataFrame) -> DataBundle:
     return DataBundle(c, v, p, quality)
 
 
-@st.cache_data(show_spinner=False, max_entries=2)
+@st.cache_data(show_spinner='Đang chuẩn bị dữ liệu Great Britain 2024…', max_entries=2)
 def load_data(path: Path, mtime_ns: int, file_size: int) -> DataBundle:
     """mtime_ns and file_size deliberately participate in Streamlit's cache key."""
     path = Path(path)
