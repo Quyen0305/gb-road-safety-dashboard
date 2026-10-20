@@ -151,10 +151,18 @@ h1.hero-title {
 .st-key-headline_metrics [data-testid="stMetricValue"] {
   margin-top: 3px;
   color: var(--blue);
-  font-size: clamp(30px, 2.35vw, 36px);
+  font-size: clamp(36px, 3vw, 44px);
   font-weight: 780;
   letter-spacing: -.8px;
   line-height: 1.15;
+}
+
+.st-key-headline_metrics [data-testid="stMetricValue"] p {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  margin: 0;
 }
 
 .st-key-headline_metrics [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:nth-child(2) [data-testid="stMetric"] {
@@ -375,7 +383,7 @@ hr {
   :root { --sidebar-width: 240px; }
   .block-container { padding: 1.4rem 1.35rem 2.5rem; }
   .st-key-headline_metrics [data-testid="stMetric"] { padding: 15px; }
-  .st-key-headline_metrics [data-testid="stMetricValue"] { font-size: 29px; }
+  .st-key-headline_metrics [data-testid="stMetricValue"] { font-size: 34px; }
 }
 
 @media (max-width: 900px) {
@@ -401,5 +409,5 @@ hr {
     flex-basis: 100%;
   }
   .st-key-headline_metrics [data-testid="stMetric"] { min-height: 100px; }
-  .st-key-headline_metrics [data-testid="stMetricValue"] { font-size: 30px; }
+  .st-key-headline_metrics [data-testid="stMetricValue"] { font-size: 36px; }
 }
